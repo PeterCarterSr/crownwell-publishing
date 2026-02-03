@@ -1,0 +1,14 @@
+ebook:
+  outputs:
+    - html_package
+
+  metadata:
+    language: "en"
+    publisher: "Crownwell Press"
+
+  toc:
+    generate: true
+    hyperlink: true
+
+  validation:
+    structural_only: true

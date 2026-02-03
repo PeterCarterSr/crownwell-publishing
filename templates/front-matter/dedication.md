@@ -1,0 +1,3 @@
+## Dedication
+
+{{DEDICATION_TEXT}}

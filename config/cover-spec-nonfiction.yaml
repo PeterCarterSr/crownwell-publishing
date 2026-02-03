@@ -1,0 +1,21 @@
+cover_nonfiction:
+  model: "simon-schuster-narrative"
+
+  principles:
+    - typography_dominant
+    - restrained_serif
+    - title_primary
+    - minimal_imagery
+
+  layout:
+    title_weight: heavy
+    subtitle_weight: regular
+    author_weight: medium
+
+  palette:
+    mode: limited
+    max_colors: 3
+
+  imagery:
+    allowed: true
+    style: subtle_texture_or_single_image

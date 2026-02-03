@@ -1,0 +1,56 @@
+imprint:
+  name: "Crownwell Press"
+
+house_style:
+  philosophy:
+    docx_authoritative: true
+    no_rewriting: true
+    formatting_only: true
+
+typography:
+  body_font:
+    preferred: "Libre Baskerville"
+    fallback_stack:
+      - "Georgia"
+      - "Times New Roman"
+      - "serif"
+  heading_font:
+    preferred: "Libre Baskerville"
+    fallback_stack:
+      - "Georgia"
+      - "Times New Roman"
+      - "serif"
+
+structure:
+  toc:
+    include_levels:
+      - h1
+      - h2
+    max_depth: 2
+    hyperlink: true
+    chapter_only: true
+
+  headings:
+    h1: "Book Title"
+    h2: "Chapter"
+    h3: "Section"
+
+  quotes:
+    blockquote_for_scripture: true
+
+  lists:
+    normalize_bullets: true
+    normalize_numbering: true
+
+front_matter_order:
+  - title_page
+  - copyright_page
+  - dedication_optional
+  - epigraph_optional
+  - toc
+  - preface_or_introduction
+
+back_matter_order:
+  - author_bio
+  - imprint_page
+  - call_to_action
