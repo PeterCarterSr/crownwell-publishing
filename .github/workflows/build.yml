@@ -15,8 +15,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
       - name: Install pandoc
         run: sudo apt-get update && sudo apt-get install -y pandoc
+
+      - name: Install Python deps
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install pyyaml
 
       - name: Run build
         env:
@@ -27,5 +37,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: crownwell-output
-          path: |
-            runs/**/output/**
+      
+::contentReference[oaicite:0]{index=0}
