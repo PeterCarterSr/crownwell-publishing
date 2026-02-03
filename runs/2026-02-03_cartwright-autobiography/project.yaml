@@ -1,0 +1,28 @@
+run:
+  id: "2026-02-03_cartwright-autobiography"
+  mode: "ebook_phase_1A_cloud"
+
+book:
+  title: "Autobiography of Peter Cartwright"
+  subtitle: ""
+  author: "Peter Cartwright"
+  imprint: "Crownwell Press"
+  category: "nonfiction"
+  model: "trade-nonfiction"
+
+input:
+  format: docx
+  path: "runs/2026-02-03_cartwright-autobiography/input/book.docx"
+  authoritative: true
+
+output:
+  type: "html_package"
+  path: "runs/2026-02-03_cartwright-autobiography/output/"
+
+cover:
+  apply: true
+  spec: "config/cover-spec-nonfiction.yaml"
+
+metadata:
+  copyright_year: "2026"
+  asin: "PENDING"
