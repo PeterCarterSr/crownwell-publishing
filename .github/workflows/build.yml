@@ -1,0 +1,31 @@
+name: Build Crownwell Run (Phase 1A)
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_yaml:
+        description: "Path to runs/<run>/project.yaml"
+        required: true
+        default: "runs/2026-02-03_cartwright-autobiography/project.yaml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pandoc
+        run: sudo apt-get update && sudo apt-get install -y pandoc
+
+      - name: Run build
+        env:
+          PROJECT_YAML: ${{ inputs.project_yaml }}
+        run: python3 tools/build.py
+
+      - name: Upload output artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: crownwell-output
+          path: |
+            runs/**/output/**
