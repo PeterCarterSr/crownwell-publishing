@@ -1,0 +1,33 @@
+run:
+  id: "2026-02-03_holy-bible-kjv-1611"
+  mode: "ebook_phase_1A_cloud"
+
+book:
+  title: "HOLY BIBLE"
+  subtitle: "King James Version (1611) – Red Letter Edition"
+  author: ""
+  imprint: "Crownwell Press"
+  category: "nonfiction"
+  model: "trade-nonfiction"
+
+input:
+  format: docx
+  path: "runs/2026-02-03_holy-bible-kjv-1611/input/book.docx"
+  authoritative: true
+
+output:
+  type: "html_package"
+  path: "runs/2026-02-03_holy-bible-kjv-1611/output/"
+
+cover:
+  apply: true
+  spec: "config/cover-spec-nonfiction.yaml"
+
+metadata:
+  copyright_year: "2026"
+  asin: "PENDING"
+
+bible_specific:
+  red_letter:
+    strategy: "preserve-existing-only"
+    note: "No automatic inference of Jesus' words in Phase 1A"
