@@ -242,26 +242,35 @@ lang: "{self.metadata.get('language', 'en-US')}"
         
         # Write build log
         log_path = self.output_dir / "build-log.md"
-        log_content = f"""# Build Log
-## {self.metadata['title']}
-
-**Build Date**: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
-
-### Metadata
-- Title: {self.metadata['title']}
-- Author: {self.metadata['author']}
-- Publisher: {self.metadata.get('publisher', 'Crownwell Press')}
-
-### Build Log
-
-```
-{"".join([f"{e}\n" for e in self.log_entries])}
-```
-
-### Output Files
-- EPUB: {final_epub.name}
-- Validation: validation-report.txt (if generated)
-"""
+        
+        # Build log content without f-strings to avoid syntax issues
+        log_lines = [
+            "# Build Log",
+            "## " + self.metadata['title'],
+            "",
+            "**Build Date**: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "",
+            "### Metadata",
+            "- Title: " + self.metadata['title'],
+            "- Author: " + self.metadata['author'],
+            "- Publisher: " + self.metadata.get('publisher', 'Crownwell Press'),
+            "",
+            "### Build Log",
+            "",
+            "```"
+        ]
+        
+        log_lines.extend(self.log_entries)
+        
+        log_lines.extend([
+            "```",
+            "",
+            "### Output Files",
+            "- EPUB: " + final_epub.name,
+            "- Validation: validation-report.txt (if generated)"
+        ])
+        
+        log_content = "\n".join(log_lines)
         
         log_path.write_text(log_content, encoding='utf-8')
         self.log(f"Build log written to: {log_path}")
