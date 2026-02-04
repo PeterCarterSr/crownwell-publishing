@@ -11,7 +11,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,8 +25,30 @@ jobs:
 
       - name: Install Python deps
         run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install pyyaml
+          python -m pip install --upgrade pip
+          python -m pip install pyyaml
+
+      - name: Determine output path (for artifact upload)
+        id: outpath
+        env:
+          PROJECT_YAML: ${{ inputs.project_yaml }}
+        run: |
+          python - << 'PY'
+          import os, sys, yaml
+          p = os.environ.get("PROJECT_YAML","").strip()
+          if not p:
+            print("PROJECT_YAML missing", file=sys.stderr)
+            sys.exit(1)
+          with open(p, "r", encoding="utf-8") as f:
+            data = yaml.safe_load(f) or {}
+          out_path = (data.get("output") or {}).get("path") or ""
+          if not out_path:
+            print("output.path missing in project.yaml", file=sys.stderr)
+            sys.exit(1)
+          # Write to GITHUB_OUTPUT for modern Actions
+          with open(os.environ["GITHUB_OUTPUT"], "a") as gh_out:
+            gh_out.write(f"out_path={out_path}\n")
+          PY
 
       - name: Run build
         env:
@@ -39,4 +60,4 @@ jobs:
         with:
           name: crownwell-output
           path: |
-            runs/**/output/**
+            ${{ steps.outpath.outputs.out_path }}/**
