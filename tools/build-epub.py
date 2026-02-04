@@ -255,7 +255,7 @@ lang: "{self.metadata.get('language', 'en-US')}"
 ### Build Log
 
 ```
-{"".join([f"{e}\n" for e in self.log_entries])}
+{chr(10).join(self.log_entries)}
 ```
 
 ### Output Files
