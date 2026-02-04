@@ -1,46 +1,48 @@
+#!/usr/bin/env python3
 import os
 import re
 import subprocess
 from datetime import datetime
 
+import yaml
+
+
 def read_text(path: str) -> str:
     with open(path, "r", encoding="utf-8") as f:
         return f.read()
 
+
 def write_text(path: str, content: str) -> None:
-    os.makedirs(os.path.dirname(path), exist_ok=True)
+    dirpath = os.path.dirname(path)
+    if dirpath:
+        os.makedirs(dirpath, exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         f.write(content)
 
+
 def yaml_get_path(yaml_text: str, dotted: str) -> str:
     """
-    Minimal extractor for our controlled YAML structure.
-    Assumes 2-space indentation, simple scalars, no lists.
+    Robust extractor using real YAML parsing (PyYAML).
+    Supports nested mappings and dotted lookups like "run.id".
+    Returns a string scalar or "" if missing/non-scalar.
     """
-    parts = dotted.split(".")
-    block = yaml_text
-    for p in parts[:-1]:
-        m = re.search(rf"^{re.escape(p)}:\s*$", block, re.MULTILINE)
-        if not m:
-            return ""
-        header_line = block[:m.start()].splitlines()[-1]
-        indent = len(header_line) - len(header_line.lstrip(" "))
-        rest = block[m.end():]
-        lines = rest.splitlines()
-        kept = []
-        for ln in lines:
-            if not ln.strip():
-                kept.append(ln)
-                continue
-            ln_indent = len(ln) - len(ln.lstrip(" "))
-            if ln_indent <= indent:
-                break
-            kept.append(ln)
-        block = "\n".join(kept)
+    data = yaml.safe_load(yaml_text)
+    if data is None:
+        return ""
 
-    last = parts[-1]
-    m2 = re.search(rf"^{re.escape(last)}:\s*\"?([^\"]*)\"?\s*$", block, re.MULTILINE)
-    return m2.group(1).strip() if m2 else ""
+    cur = data
+    for part in dotted.split("."):
+        if not isinstance(cur, dict):
+            return ""
+        cur = cur.get(part)
+        if cur is None:
+            return ""
+
+    if isinstance(cur, (str, int, float, bool)):
+        return str(cur).strip()
+
+    return ""
+
 
 def pandoc_docx_to_html(docx_path: str) -> str:
     r = subprocess.run(
@@ -51,17 +53,28 @@ def pandoc_docx_to_html(docx_path: str) -> str:
     )
     return r.stdout
 
+
 def extract_body(html: str) -> str:
     m = re.search(r"<body[^>]*>(.*)</body>", html, re.DOTALL | re.IGNORECASE)
     return m.group(1) if m else html
 
+
 def markdown_block_to_html(md: str) -> str:
-    md = md.strip()
+    """
+    Minimal markdown-to-HTML for the controlled templates we use.
+    Intended for:
+      - # / ## headings
+      - blank-line-separated paragraphs
+      - line breaks within paragraphs -> <br/>
+    """
+    md = (md or "").strip()
     if not md:
         return ""
+
     md = md.replace("\r\n", "\n")
     md = re.sub(r"^# (.*)$", r"<h1>\1</h1>", md, flags=re.MULTILINE)
     md = re.sub(r"^## (.*)$", r"<h2>\1</h2>", md, flags=re.MULTILINE)
+
     paragraphs = [p.strip() for p in md.split("\n\n") if p.strip()]
     out = []
     for p in paragraphs:
@@ -71,16 +84,21 @@ def markdown_block_to_html(md: str) -> str:
             out.append("<p>" + p.replace("\n", "<br/>\n") + "</p>")
     return "\n".join(out)
 
+
 def fill_placeholders(tpl: str, mapping: dict) -> str:
     out = tpl
     for k, v in mapping.items():
         out = out.replace("{{" + k + "}}", v or "")
     return out
 
-def main():
+
+def main() -> None:
     project_yaml = os.environ.get("PROJECT_YAML", "").strip()
     if not project_yaml:
         raise SystemExit("PROJECT_YAML env var is required (path to runs/<run>/project.yaml).")
+
+    if not os.path.exists(project_yaml):
+        raise SystemExit(f"project.yaml not found at: {project_yaml}")
 
     y = read_text(project_yaml)
 
@@ -100,9 +118,11 @@ def main():
     if not os.path.exists(input_path):
         raise SystemExit(f"Input DOCX not found at: {input_path}")
 
+    # Convert DOCX -> standalone HTML, then extract <body> content.
     converted_html = pandoc_docx_to_html(input_path)
     body_html = extract_body(converted_html)
 
+    # Load templates (repo-relative paths).
     title_tpl = read_text("templates/front-matter/title-page.md")
     copyright_tpl = read_text("templates/copyright/copyright-page.md")
     imprint_tpl = read_text("templates/back-matter/imprint-page.md")
@@ -177,6 +197,7 @@ Notes:
 - TOC generation not implemented yet (Phase 1A.2).
 """
     write_text(os.path.join(output_root, "reports", "build-report.md"), report)
+
 
 if __name__ == "__main__":
     main()
