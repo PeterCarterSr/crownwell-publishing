@@ -1,0 +1,11 @@
+# DOCX files must be treated as binary
+*.docx binary
+*.doc binary
+
+# Other binary formats
+*.epub binary
+*.pdf binary
+*.zip binary
+*.jpg binary
+*.jpeg binary
+*.png binary
