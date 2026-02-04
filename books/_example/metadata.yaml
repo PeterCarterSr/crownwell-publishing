@@ -1,0 +1,43 @@
+# Example Book Metadata Template
+# Copy this file to your book directory and fill in details
+
+# Basic Information (REQUIRED)
+title: "Your Book Title Here"
+author: "Author Name"
+publisher: "Crownwell Press"
+
+# Publication Details
+copyright_year: 2026
+language: "en-US"
+slug: "your-book-slug"  # lowercase-with-dashes, used for filename
+
+# Identifiers (Optional but recommended)
+isbn: ""  # Assign ISBN when ready
+asin: ""  # Amazon identifier (after upload to KDP)
+
+# Description
+subtitle: ""  # If book has subtitle
+description: |
+  Write your book description here.
+  This can span multiple lines.
+  It will appear in EPUB metadata.
+
+# Classification (helps with discoverability)
+subjects:
+  - "Category / Subcategory"
+  - "Another Category"
+
+# Additional metadata (optional)
+editor: ""
+translator: ""
+series: ""
+series_number: ""
+
+# Rights
+rights: "Copyright 2026 by [Author Name]"
+rights_holder: "Crownwell Press"
+
+# Internal notes (not included in EPUB)
+notes: |
+  Add any internal production notes here.
+  These are for your reference only.

@@ -1,0 +1,51 @@
+# Crownwell Press Book Metadata
+# Complete this file for each book project
+
+# Basic Information (REQUIRED)
+title: "Autobiography of Peter Cartwright"
+author: "Peter Cartwright"
+publisher: "Crownwell Press"
+
+# Publication Details
+copyright_year: 2026
+language: "en-US"
+slug: "cartwright-autobiography"  # Used for filename
+
+# Identifiers (Optional but recommended)
+isbn: ""  # Assign ISBN when ready
+asin: ""  # Amazon identifier (after upload to KDP)
+
+# Description
+subtitle: ""  # If book has subtitle
+description: |
+  The remarkable life story of Peter Cartwright, circuit-riding Methodist 
+  preacher on the American frontier. A firsthand account of revival meetings, 
+  pioneer hardships, and the spread of Methodism in early America.
+
+# Classification
+subjects:
+  - "Biography & Autobiography / Religious"
+  - "Religion / Christianity / Methodist"
+  - "History / United States / 19th Century"
+
+# Additional metadata (optional)
+editor: ""
+translator: ""
+series: ""
+series_number: ""
+
+# Rights
+rights: "Public Domain"  # or copyright statement
+rights_holder: "Crownwell Press"
+
+# Notes (for internal use, not included in EPUB)
+notes: |
+  Original publication: 1856
+  Public domain work, being republished by Crownwell Press
+  Original publisher: Delmarva Publications (remove all references)
+  
+  To-do:
+  - Remove old publisher branding
+  - Generate new title page
+  - Generate copyright page with Crownwell Press
+  - Preserve all original manuscript content

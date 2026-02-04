@@ -1,0 +1,258 @@
+/*
+ * Crownwell Press EPUB Stylesheet
+ * Professional typography for EPUB3 publications
+ * Standards-compliant CSS for optimal e-reader rendering
+ */
+
+/* Typography Foundation */
+body {
+  font-family: "Palatino", "Georgia", "Times New Roman", serif;
+  font-size: 1em;
+  line-height: 1.5;
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  margin: 0;
+  padding: 1.5em;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Helvetica Neue", "Arial", sans-serif;
+  font-weight: bold;
+  line-height: 1.2;
+  margin-top: 1.5em;
+  margin-bottom: 0.75em;
+  text-align: left;
+  hyphens: none;
+  -webkit-hyphens: none;
+  page-break-after: avoid;
+}
+
+h1 {
+  font-size: 2em;
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+h3 {
+  font-size: 1.25em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+}
+
+/* Paragraphs */
+p {
+  margin: 0;
+  text-indent: 1.5em;
+  orphans: 2;
+  widows: 2;
+}
+
+p:first-of-type,
+h1 + p,
+h2 + p,
+h3 + p,
+h4 + p,
+h5 + p,
+h6 + p {
+  text-indent: 0;
+}
+
+/* Lists */
+ul, ol {
+  margin: 1em 0;
+  padding-left: 2em;
+}
+
+li {
+  margin: 0.5em 0;
+}
+
+/* Block Elements */
+blockquote {
+  margin: 1.5em 2em;
+  font-style: italic;
+  border-left: 3px solid #ccc;
+  padding-left: 1em;
+}
+
+pre, code {
+  font-family: "Courier New", "Courier", monospace;
+  font-size: 0.9em;
+  background-color: #f5f5f5;
+  padding: 0.2em 0.4em;
+}
+
+pre {
+  padding: 1em;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  margin: 1.5em auto;
+  width: 100%;
+  max-width: 100%;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 0.75em;
+  text-align: left;
+}
+
+th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+/* Images */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5em auto;
+}
+
+figure {
+  margin: 1.5em 0;
+  text-align: center;
+}
+
+figcaption {
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 0.5em;
+}
+
+/* Links */
+a {
+  color: #0066cc;
+  text-decoration: underline;
+}
+
+a:visited {
+  color: #551a8b;
+}
+
+/* Front Matter */
+.title-page {
+  text-align: center;
+  page-break-after: always;
+  margin-top: 20%;
+}
+
+.title-page h1 {
+  font-size: 2.5em;
+  margin-bottom: 0.5em;
+}
+
+.title-page .subtitle {
+  font-size: 1.5em;
+  font-weight: normal;
+  margin-bottom: 2em;
+}
+
+.title-page .author {
+  font-size: 1.25em;
+  margin-bottom: 1em;
+}
+
+.title-page .publisher {
+  font-size: 1em;
+  margin-top: 4em;
+}
+
+/* Copyright Page */
+.copyright-page {
+  font-size: 0.9em;
+  text-align: left;
+  page-break-after: always;
+}
+
+.copyright-page p {
+  text-indent: 0;
+  margin-bottom: 0.5em;
+}
+
+/* Table of Contents */
+nav#toc ol {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+nav#toc li {
+  margin: 0.5em 0;
+}
+
+nav#toc a {
+  text-decoration: none;
+}
+
+/* Page Breaks */
+.chapter {
+  page-break-before: always;
+}
+
+.page-break {
+  page-break-after: always;
+}
+
+/* Emphasis */
+em, i {
+  font-style: italic;
+}
+
+strong, b {
+  font-weight: bold;
+}
+
+/* Special Elements */
+.epigraph {
+  font-style: italic;
+  margin: 2em 4em;
+  text-align: right;
+}
+
+.dedication {
+  text-align: center;
+  margin: 4em 2em;
+  font-style: italic;
+  page-break-after: always;
+}
+
+/* Accessibility */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Print/E-reader Optimizations */
+@media print, screen and (prefers-color-scheme: dark) {
+  body {
+    background-color: transparent;
+    color: inherit;
+  }
+  
+  a {
+    color: inherit;
+  }
+}

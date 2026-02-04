@@ -1,0 +1,72 @@
+name: Build EPUB
+
+on:
+  workflow_dispatch:
+    inputs:
+      book_name:
+        description: "Book directory name (e.g., cartwright-autobiography)"
+        required: true
+        default: "cartwright-autobiography"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc
+          
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+          
+      - name: Install epubcheck (validation)
+        run: |
+          wget -q https://github.com/w3c/epubcheck/releases/download/v5.1.0/epubcheck-5.1.0.zip
+          unzip -q epubcheck-5.1.0.zip
+          sudo mv epubcheck-5.1.0 /opt/epubcheck
+          sudo ln -s /opt/epubcheck/epubcheck.jar /usr/local/bin/epubcheck
+          echo '#!/bin/bash' | sudo tee /usr/local/bin/epubcheck > /dev/null
+          echo 'java -jar /opt/epubcheck/epubcheck.jar "$@"' | sudo tee -a /usr/local/bin/epubcheck > /dev/null
+          sudo chmod +x /usr/local/bin/epubcheck
+          
+      - name: Build EPUB
+        run: |
+          python tools/build-epub.py books/${{ github.event.inputs.book_name }}
+          
+      - name: Upload EPUB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: epub-${{ github.event.inputs.book_name }}
+          path: |
+            books/${{ github.event.inputs.book_name }}/output/*.epub
+            books/${{ github.event.inputs.book_name }}/output/*.txt
+            books/${{ github.event.inputs.book_name }}/output/*.md
+          if-no-files-found: error
+          
+      - name: Display build summary
+        run: |
+          echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Book**: ${{ github.event.inputs.book_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Output Files" >> $GITHUB_STEP_SUMMARY
+          ls -lh books/${{ github.event.inputs.book_name }}/output/ >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f books/${{ github.event.inputs.book_name }}/output/validation-report.txt ]; then
+            echo "### Validation Report" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            tail -20 books/${{ github.event.inputs.book_name }}/output/validation-report.txt >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          fi
